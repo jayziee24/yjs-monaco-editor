@@ -1,71 +1,170 @@
-# Getting Started with Create React App
+# 🧠 Yjs + Monaco Collaborative Code Editor
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A real-time collaborative code editor built with React, Monaco Editor, and Yjs. Multiple users can edit code simultaneously with live cursor tracking, selection highlighting, and mouse pointer visualization.
 
-## Available Scripts
+## ✨ Features
 
-In the project directory, you can run:
+- **Real-time Collaboration**: Multiple users can edit code simultaneously
+- **Live Cursor Tracking**: See where other users are typing with colored cursor indicators
+- **Selection Highlighting**: View other users' text selections with color-coded highlights
+- **Mouse Pointer Tracking**: Follow other users' mouse movements in real-time
+- **User Management**: See active users with unique colors and names
+- **Clean Architecture**: Modular, maintainable code structure
 
-### `npm start`
+## 🏗️ Architecture
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### File Structure
+```
+src/
+├── components/
+│   ├── Editor.js                 # Main collaborative editor component
+│   ├── Users.js                  # User list display component
+│   └── hooks/                    # Custom hooks for functionality
+│       ├── useCollaborativeSetup.js    # Initial setup and user management
+│       ├── useLocalTracking.js         # Local cursor/selection/mouse tracking
+│       ├── useRemoteCursors.js         # Remote cursor rendering
+│       ├── useRemoteMousePointers.js   # Remote mouse pointer rendering
+│       └── useRemoteSelections.js      # Remote selection highlighting
+├── App.js                        # Main app component
+├── App.css                       # Global styles
+└── index.js                      # App entry point
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Component Responsibilities
 
-### `npm test`
+#### `Editor.js` (Main Component)
+- Orchestrates all collaborative features
+- Manages Monaco Editor instance
+- Coordinates between different hooks
+- Handles cleanup and lifecycle
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### `Users.js` (User Display)
+- Shows active users with colors
+- Filters duplicate users
+- Updates in real-time
 
-### `npm run build`
+#### Custom Hooks
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**`useCollaborativeSetup`**
+- Initializes user identity
+- Sets up awareness system
+- Handles tab close cleanup
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**`useLocalTracking`**
+- Tracks local cursor position
+- Tracks local text selection
+- Tracks local mouse movement
+- Broadcasts changes to other users
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**`useRemoteCursors`**
+- Renders remote user cursors
+- Creates cursor decorations
+- Manages cursor styles
 
-### `npm run eject`
+**`useRemoteMousePointers`**
+- Renders remote mouse pointers
+- Creates DOM elements for pointers
+- Updates pointer positions
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+**`useRemoteSelections`**
+- Renders remote text selections
+- Creates selection decorations
+- Manages selection styles
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 🚀 Getting Started
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Prerequisites
+- Node.js (v14 or higher)
+- npm or yarn
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Installation
 
-## Learn More
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd yjs-monaco-editor-1
+   ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+3. **Start the Yjs WebSocket server**
+   ```bash
+   npm run start-server
+   ```
 
-### Code Splitting
+4. **Start the React development server**
+   ```bash
+   npm start
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+5. **Open multiple browser tabs** to test collaboration
 
-### Analyzing the Bundle Size
+## 🛠️ Development
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Key Technologies
+- **React**: UI framework
+- **Monaco Editor**: Code editor component
+- **Yjs**: CRDT for conflict-free collaboration
+- **y-monaco**: Monaco Editor integration with Yjs
+- **y-websocket**: WebSocket provider for real-time sync
 
-### Making a Progressive Web App
+### Code Quality
+- **Modular Architecture**: Each feature is isolated in its own hook
+- **Clean Separation**: UI components separate from business logic
+- **Proper Cleanup**: All event listeners and decorations are cleaned up
+- **Error Handling**: Guards against invalid ranges and states
+- **Performance**: Debounced updates to prevent excessive re-renders
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Adding New Features
+1. Create a new hook in `src/components/hooks/`
+2. Import and use it in `Editor.js`
+3. Follow the existing patterns for cleanup and error handling
 
-### Advanced Configuration
+## 📝 Usage
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+1. **Open the application** in multiple browser tabs
+2. **Start typing** - you'll see your cursor and selections
+3. **Watch other users** - their cursors, selections, and mouse movements appear
+4. **Collaborate** - all changes sync in real-time
 
-### Deployment
+## 🔧 Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### WebSocket Server
+- Default port: `1234`
+- Room name: `room-code-sync`
+- Can be customized in `Editor.js`
 
-### `npm run build` fails to minify
+### User Settings
+- Random user names and colors
+- Can be customized in `useCollaborativeSetup.js`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# yjs-monaco-editor
+## 🐛 Troubleshooting
+
+### Common Issues
+1. **No collaboration**: Ensure WebSocket server is running
+2. **Cursors not showing**: Check browser console for errors
+3. **Performance issues**: Reduce number of simultaneous users
+
+### Debug Mode
+The application exposes debug objects in the browser console:
+- `window.provider`: Yjs WebSocket provider
+- `window.ydoc`: Yjs document instance
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## 📞 Support
+
+For issues and questions, please open an issue on GitHub.
